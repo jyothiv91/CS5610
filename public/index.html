@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>The MEAN Stack</title>
+	<link href="css/bootstrap.css" rel="stylesheet" />
+	<script src="js/angular.min.js"> </script>
+	<script src="features/services/controller.js"></script>
+</head>
+<body ng-app="">
+	<div class= "container" ng-controller="ServicesCtrl">
+		<h1>Service Client Maker</h1>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="serviceClient in serviceClients">
+					<td>
+						{{serviceClient.name}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
