@@ -6,7 +6,7 @@ if(typeof process.env.OPENSHIFT_MONGODB_DB_URL == "undefined") {
 	mongodbConnectionString = "cs5610"
 }
 
-var db = mongojs(mongodbConectionString, ["employees"]);
+var db = mongojs(mongodbConnectionString, ["employees"]);
 
 app.get('/', function(req, res){
   res.send('hello world!!!');
