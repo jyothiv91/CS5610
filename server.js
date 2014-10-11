@@ -1,7 +1,7 @@
 var express = require('express');
 var mongojs = require('mongojs');
 var app = express();
-var mongodbConnectionString = process.env.OPENSHIFT_MONGODB_DB_URL + "cs5610";
+var mongodbConnectionString = process.env.OPENSHIFT_MONGODB_DB_URL + "searchandgo";
 if(typeof process.env.OPENSHIFT_MONGODB_DB_URL == "undefined") {
 	mongodbConnectionString = "cs5610"
 }
