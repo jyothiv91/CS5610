@@ -1,7 +1,5 @@
 function ServicesCtrl($scope, $http) {
 
-	$scope.message = "Hello from controller";
-
 	$scope.create = function () {
 		$http.post("/serviceClients", $scope.serviceClient)
 		.success(function (response) {

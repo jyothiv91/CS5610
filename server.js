@@ -12,36 +12,24 @@ if(typeof process.env.OPENSHIFT_MONGODB_DB_URL == "undefined") {
 	mongodbConnectionString = "cs5610" //for local
 }
 
-var db = mongojs(mongodbConnectionString, ["employees"]);
+var db = mongojs(mongodbConnectionString, ["comment"]);
 var db1 = mongojs(mongodbConnectionString, ["serviceClients"]);
-
-app.get('/', function(req, res){
-  res.send('hello world!!!');
-});
 
 app.get('/env', function(req, res){
 	res.json(process.env);
 
 });
 
-app.get('/someJson', function(req, res) {
-	res.json({hello:"world"});
-});
-
-
-app.get('/getAllEmployees', function(req, res){
-	db.employees.find(function(err, data){
+app.get('/getAllComments', function(req, res){
+	db.comment.find(function(err, data){
 		res.json(data);
 		});
-
 });
 
 
-app.get('/getEmployeeById/:id', function(req, res){
+app.get('/getCommentsById/:id', function(req, res){
 	var id = req.params.id;
-	//console.log('getEmployeesById' + id);
-	//res.json([]);
-	db.employees.findOne({
+	db.comment.findOne({
 	    _id:mongojs.ObjectId(id)
 	}, function(err, doc) {
 	    res.json(doc);
@@ -50,8 +38,8 @@ app.get('/getEmployeeById/:id', function(req, res){
 
 });
 
-app.get('/removeEmployeeById/:id', function(req, res){
-	db.employees.remove({
+app.get('/removeCommentById/:id', function(req, res){
+	db.comment.remove({
 	    _id:mongojs.ObjectId(req.params.id)
 	}, function(err, doc) {
 	    res.json(doc);
@@ -59,8 +47,8 @@ app.get('/removeEmployeeById/:id', function(req, res){
 
 });
 
-app.get('/removeEmployeeByLastName/:lastName', function(req, res){
-	db.employees.remove({
+app.get('/removeCommentByName/:lastName', function(req, res){
+	db.comment.remove({
 	    last :req.params.lastName
 	}, false, function(err, doc) {
 	    res.json(doc);
@@ -69,18 +57,18 @@ app.get('/removeEmployeeByLastName/:lastName', function(req, res){
 });
 
 
-app.get('/updateEmployee/:id', function(req, res){
+app.get('/updateComment/:id', function(req, res){
 
 	console.log(req.query);
-	var salary = req.query.salary;
+	var cbody = req.query.cbody;
 
-	db.employees.findAndModify({
+	db.comment.findAndModify({
 	    query: { _id:mongojs.ObjectId(req.params.id) },
-	    update: { $set: { salary:salary } },
+	    update: { $set: { cbody:cbody } },
 	    new: true
 	}, function(err, doc, lastErrorObject) {
 	     //res.json(doc);
-	     db.employees.find(function(err, data){
+	     db.comment.find(function(err, data){
 		 		res.json(data);
 		});
 
@@ -88,20 +76,16 @@ app.get('/updateEmployee/:id', function(req, res){
 	});
 });
 
-
-
-
-
-app.get('/createEmployee', function(req, res){
+app.get('/createComment', function(req, res){
 
 	console.log(req.query);
-	var employee = {
-		first: req.query.firstName,
-		last: req.query.lastName,
-		salary: req.query.salary
+	var comment = {
+		cname: req.query.cname,
+		chead: req.query.chead,
+		cbody: req.query.cbody
 	};
 
-	db.employees.insert(employee, function(err, data){
+	db.comment.insert(comment, function(err, data){
 		console.log(err);
 		console.log(data);
 		res.json(data);
@@ -110,15 +94,13 @@ app.get('/createEmployee', function(req, res){
 
 
 //second experiment
-// map incoming HTTP URL patterns to execute various functions
-// handle HTTP GET request to read all serviceClients from the database
 app.get("/serviceClients", function (req, res) {
 	db1.serviceClients.find(function (err, docs) {
 		res.json(docs);
 	});
 });
 
-// handle HTTP POST request to insert new serviceClients into the database
+// to insert new comment body into database
 app.post("/serviceClients", function (req, res) {
 	// the serviceClient is in the body of the HTTP request
 	var svc = req.body;
@@ -130,7 +112,7 @@ app.post("/serviceClients", function (req, res) {
 	});
 });
 
-// handle HTTP GET request for a single serviceClient with :id parameter
+// to select single comment in order to update it
 app.get("/serviceClients/:id", function (req, res) {
 	// parse id from the path parameter
 	var id = req.params.id;
@@ -141,7 +123,7 @@ app.get("/serviceClients/:id", function (req, res) {
 	});
 });
 
-// handle HTTP PUT request to update serviceClient instance with :id parameter
+// handle HTTP PUT request to update comment
 app.put("/serviceClients/:id", function (req, res) {
 	db1.serviceClients.findAndModify({
 		// find the object by id
@@ -156,7 +138,7 @@ app.put("/serviceClients/:id", function (req, res) {
 	});
 });
 
-// handle HTTP DELETE request to remove a serviceClient with :id parameter
+// to delete a comment with id passed as a parameter
 app.delete("/serviceClients/:id", function (req, res) {
 	// parse id from the path parameter
 	var id = req.params.id;
