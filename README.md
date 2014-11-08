@@ -1,4 +1,4 @@
-This project is meant to help users search for a place using YELP and go that place using UBER. 
+These are the list of Experiments performed for the course, Web Development CS5610 under Professor Jose Annunziato
 
 http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
 
